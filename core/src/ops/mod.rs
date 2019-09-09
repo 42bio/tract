@@ -137,15 +137,6 @@ pub trait Op: fmt::Debug + objekt::Clone + Send + Sync + 'static + Downcast + St
         Ok(None)
     }
 
-    /// Declutter the op to the tract_core operator set as much as possible.
-    fn declutter(
-        &self,
-        _model: &TypedModel,
-        _node: &TypedNode,
-    ) -> TractResult<Option<TypedModelPatch>> {
-        Ok(None)
-    }
-
     /// Fuse op after codegen to deal with local optimisations.
     fn fuse(&self, _model: &TypedModel, _node: &TypedNode) -> TractResult<Option<TypedModelPatch>> {
         Ok(None)
@@ -202,6 +193,15 @@ pub trait TypedOp:
 
     fn axes_info(&self, _model: &TypedModel, _node: &TypedNode) -> TractResult<AxesInfo> {
         Ok(tvec![].into())
+    }
+
+    /// Declutter the op to the tract_core operator set as much as possible.
+    fn declutter(
+        &self,
+        _model: &TypedModel,
+        _node: &TypedNode,
+    ) -> TractResult<Option<TypedModelPatch>> {
+        Ok(None)
     }
 
     /// Transforms the op in an equivalent one, discarding one dummy axis (of dim
