@@ -100,13 +100,6 @@ macro_rules! element_map {
                 stringify!($Name).into()
             }
 
-            fn axes_info(&self,
-                _model: &TypedModel,
-                node: &TypedNode,
-            ) -> TractResult<AxesInfo> {
-                let rank = node.outputs[0].fact.shape.rank();
-                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
-            }
             canonic!();
             op_as_typed_op!();
         }
@@ -134,6 +127,14 @@ macro_rules! element_map {
 
             fn output_facts(&self, inputs: &[&TypedTensorInfo]) -> TractResult<TVec<TypedTensorInfo>> {
                 Ok(tvec!(TypedTensorInfo::dt_shape(inputs[0].datum_type, inputs[0].shape.clone())?))
+            }
+
+            fn axes_info(&self,
+                _model: &TypedModel,
+                node: &TypedNode,
+            ) -> TractResult<AxesInfo> {
+                let rank = node.outputs[0].fact.shape.rank();
+                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
             }
 
             fn pulsify(
@@ -185,14 +186,6 @@ macro_rules! element_map_move {
                 stringify!($Name).into()
             }
 
-            fn axes_info(&self,
-                _model: &TypedModel,
-                node: &TypedNode,
-            ) -> TractResult<AxesInfo> {
-                let rank = node.outputs[0].fact.shape.rank();
-                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
-            }
-
             canonic!();
             op_as_typed_op!();
         }
@@ -229,6 +222,14 @@ macro_rules! element_map_move {
                     return Ok(tvec!(TypedTensorInfo::shape::<$to,_,_>(inputs[0].shape.clone())?));
                 })*
                 bail!("{} not covering {:?}", stringify!($Name), dt)
+            }
+
+            fn axes_info(&self,
+                _model: &TypedModel,
+                node: &TypedNode,
+            ) -> TractResult<AxesInfo> {
+                let rank = node.outputs[0].fact.shape.rank();
+                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
             }
 
             fn pulsify(
@@ -280,14 +281,6 @@ macro_rules! element_map_inplace {
                 stringify!($Name).into()
             }
 
-            fn axes_info(&self,
-                _model: &TypedModel,
-                node: &TypedNode,
-            ) -> TractResult<AxesInfo> {
-                let rank = node.outputs[0].fact.shape.rank();
-                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
-            }
-
             canonic!();
             op_as_typed_op!();
         }
@@ -320,6 +313,14 @@ macro_rules! element_map_inplace {
 
             fn output_facts(&self, inputs: &[&TypedTensorInfo]) -> TractResult<TVec<TypedTensorInfo>> {
                 Ok(tvec!(TypedTensorInfo::dt_shape(inputs[0].datum_type, inputs[0].shape.clone())?))
+            }
+
+            fn axes_info(&self,
+                _model: &TypedModel,
+                node: &TypedNode,
+            ) -> TractResult<AxesInfo> {
+                let rank = node.outputs[0].fact.shape.rank();
+                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
             }
 
             fn pulsify(
@@ -371,14 +372,6 @@ macro_rules! element_map_with_params {
                 stringify!($Name).into()
             }
 
-            fn axes_info(&self,
-                _model: &TypedModel,
-                node: &TypedNode,
-            ) -> TractResult<AxesInfo> {
-                let rank = node.outputs[0].fact.shape.rank();
-                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
-            }
-
             canonic!();
             op_as_typed_op!();
         }
@@ -409,6 +402,14 @@ macro_rules! element_map_with_params {
 
             fn output_facts(&self, inputs: &[&TypedTensorInfo]) -> TractResult<TVec<TypedTensorInfo>> {
                 Ok(tvec!(inputs[0].clone()))
+            }
+
+            fn axes_info(&self,
+                _model: &TypedModel,
+                node: &TypedNode,
+            ) -> TractResult<AxesInfo> {
+                let rank = node.outputs[0].fact.shape.rank();
+                Ok((0..rank).map(|axis| AxisInfo::simple(axis)).collect())
             }
 
             fn pulsify(
